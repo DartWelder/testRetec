@@ -1,0 +1,19 @@
+{
+  "name": "testretek",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DartWelder/testRetek.git"
+  },
+  "author": "Darth Welder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DartWelder/testRetek/issues"
+  },
+  "homepage": "https://github.com/DartWelder/testRetek#readme"
+}
