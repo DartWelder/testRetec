@@ -6,10 +6,10 @@ $(document).ready(function() {
     context.strokeWidth = 5;
     context.fillStyle = 'rgba(255,255,255,0.1)';
 
-    var rowHeight;
-    var columnWidth;
-
-    var rowCount = $("#rows").val(),
+    var rowHeight,
+        columnWidth,
+        isTitleClick = false,
+        rowCount = $("#rows").val(),
         columnCount = $("#columns").val();
 
 
@@ -26,6 +26,8 @@ $(document).ready(function() {
     });
 
 
+
+
     function clearCanvas() {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -33,14 +35,14 @@ $(document).ready(function() {
 
 
 
-    function drawTable(callback) {
+    function drawTable() {
         clearCanvas();
         rowHeight = canvas.height / rowCount;
         columnWidth = canvas.width / columnCount;
         context.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 
         drawRowLines();
-        drawColumnsLines(columnCount);
+        drawColumnsLines();
         drawText();
 
 
@@ -49,7 +51,7 @@ $(document).ready(function() {
 
         function drawText() {
             context.textAlign = 'center';
-            context.font = "10pt Arial";
+            context.font = "bold 10pt Arial";
             for (let a = 1; a <= columnCount; a++) {
                 context.fillStyle = 'rgba(255,255,255,1)';
                 context.fillText(
@@ -85,39 +87,89 @@ $(document).ready(function() {
             }
         }
 
-        /*callback();*/
+
     }
 
     function toggleMenu() {
         $("#tableCanvas").click(e => {
             var clickPos = { x: e.offsetX, y: e.offsetY }
-            if (clickPos.y <= rowHeight) {
-                menuItem = Math.ceil(clickPos.x / columnWidth);
-                console.log(menuItem);
+            if (!isTitleClick && clickPos.y <= rowHeight) {
+                titleChoise = Math.ceil(clickPos.x / columnWidth);
+                isTitleClick = true;
+                console.log(titleChoise)
+                context.beginPath();
+                context.fillStyle = '#fff';
+
+                let startX = (titleChoise - 1) * columnWidth + 1,
+                    startY = rowHeight + 2,
+                    width = columnWidth - 2,
+                    height = rowHeight * 2 - 3
+                context.fillStyle = 'rgba(255,255,255,0.1)';
+                context.clearRect(startX, startY, width, height);
+                context.fillRect(startX, startY, width, height);
+                drawMenuItems()
+
+                function drawMenuItems() {
+                    var menuItemHeigth = rowHeight / 2;
+
+                    for (i = 1; i <= 4; i++) {
+                        context.beginPath();
+                        context.fillStyle = "#fff";
+                        context.fillText("Option" + i, startX + columnWidth / 2, startY + menuItemHeigth * i - 5);
+                        context.moveTo(startX + 5, (startY + menuItemHeigth * i) - 2);
+                        context.lineTo(startX - 7 + columnWidth, (startY + menuItemHeigth * i) - 2);
+                        context.stroke();
+                    }
+
+                }
+
+
+
+
+                context.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+
+            } else {
+                drawTable()
+                isTitleClick = false;
             }
+
         });
+
+        function itemSelect() {
+
+        }
+
+
     }
 
 
+    var preIndex = {};
 
 
-    $("#tableCanvas").mousemove(e => {
-        drawTable();
-        var cursorPos = { x: e.offsetX, y: e.offsetY }
-        var cell = {};
-        cell.xIndex = Math.ceil(cursorPos.x / columnWidth);
-        cell.yIndex = Math.ceil(cursorPos.y / rowHeight);
+    /*
+        $("#tableCanvas").mousemove(e => {
 
+            var cursorPos = { x: e.offsetX, y: e.offsetY };
+            var cell = {};
+            cell.xIndex = Math.ceil(cursorPos.x / columnWidth);
+            cell.yIndex = Math.ceil(cursorPos.y / rowHeight);
 
-        context.fillStyle = 'rgba(255,255,255,0.1)';
-        context.fillRect(
-            (cell.xIndex - 1) * columnWidth + 1,
-            (cell.yIndex - 1) * rowHeight + 1,
-            columnWidth - 2,
-            rowHeight - context.lineWidth);
+            if (!isTitleClick && (cell.xIndex != preIndex.x || cell.yIndex != preIndex.y)) {
 
+                drawTable();
+                context.beginPath();
+                context.fillStyle = 'rgba(255,255,255,0.1)';
+                context.fillRect(
+                    (cell.xIndex - 1) * columnWidth + 1,
+                    (cell.yIndex - 1) * rowHeight + 1,
+                    columnWidth - 2,
+                    rowHeight - context.lineWidth);
+                preIndex.x = cell.xIndex;
+                preIndex.y = cell.yIndex;
 
-    });
+            }
 
+        });
+    */
 
 });
