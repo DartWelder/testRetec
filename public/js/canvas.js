@@ -1,4 +1,7 @@
 $(document).ready(function() {
+
+
+
     var canvas = $("#tableCanvas")[0];
     context = canvas.getContext("2d");
     context.lineWidth = 2;
@@ -14,26 +17,25 @@ $(document).ready(function() {
 
 
 
+
+
     drawTable();
     toggleMenu();
+    getTableParams();
 
 
-    $(".inputs").change(() => {
+    function getTableParams() {
+        $(".inputs").change(() => {
 
-        rowCount = $("#rows").val();
-        columnCount = $("#columns").val();
-        drawTable();
-    });
-
-
-
+            rowCount = $("#rows").val();
+            columnCount = $("#columns").val();
+            drawTable();
+        });
+    }
 
     function clearCanvas() {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
-
-
-
 
     function drawTable() {
         clearCanvas();
@@ -91,33 +93,45 @@ $(document).ready(function() {
     }
 
     function toggleMenu() {
+
+        var menuItemsCount = 4,
+            menuItemHeigth,
+            isShowMessage;
+
         $("#tableCanvas").click(e => {
             var clickPos = { x: e.offsetX, y: e.offsetY }
             if (!isTitleClick && clickPos.y <= rowHeight) {
                 titleChoise = Math.ceil(clickPos.x / columnWidth);
                 isTitleClick = true;
-                console.log(titleChoise)
                 context.beginPath();
                 context.fillStyle = '#fff';
 
                 let startX = (titleChoise - 1) * columnWidth + 1,
                     startY = rowHeight + 2,
                     width = columnWidth - 2,
-                    height = rowHeight * 2 - 3
+                    height = rowHeight * 3 - 3
                 context.fillStyle = 'rgba(255,255,255,0.1)';
                 context.clearRect(startX, startY, width, height);
                 context.fillRect(startX, startY, width, height);
                 drawMenuItems()
 
                 function drawMenuItems() {
-                    var menuItemHeigth = rowHeight / 2;
+                    menuItemHeigth = rowHeight / 2;
+                    // Draw menu header
+                    context.beginPath();
+                    context.fillStyle = "#fff";
+                    context.fillText(titleChoise, startX + columnWidth / 2, startY + rowHeight / 2);
+                    context.moveTo(startX + 5, startY + rowHeight - 2);
+                    context.lineTo(startX - 7 + columnWidth, startY + rowHeight - 2);
+                    context.stroke();
 
-                    for (i = 1; i <= 4; i++) {
+
+                    for (i = 1; i <= menuItemsCount; i++) {
                         context.beginPath();
                         context.fillStyle = "#fff";
-                        context.fillText("Option" + i, startX + columnWidth / 2, startY + menuItemHeigth * i - 5);
-                        context.moveTo(startX + 5, (startY + menuItemHeigth * i) - 2);
-                        context.lineTo(startX - 7 + columnWidth, (startY + menuItemHeigth * i) - 2);
+                        context.fillText("Menu" + i, startX + columnWidth / 2, startY + menuItemHeigth * i + rowHeight - 6);
+                        context.moveTo(startX + 5, startY + menuItemHeigth * i + rowHeight - 2);
+                        context.lineTo(startX - 7 + columnWidth, startY + menuItemHeigth * i + rowHeight - 2);
                         context.stroke();
                     }
 
@@ -128,48 +142,44 @@ $(document).ready(function() {
 
                 context.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 
+            } else if (!isShowMessage &&
+                isTitleClick &&
+                clickPos.y > rowHeight * 2 + 2 &&
+                clickPos.y < rowHeight * 2 + menuItemHeigth * menuItemsCount &&
+                clickPos.x < titleChoise * columnWidth &&
+                clickPos.x > (titleChoise - 1) * columnWidth) {
+
+                itemSelect();
+
             } else {
-                drawTable()
+                drawTable();
                 isTitleClick = false;
+                isShowMessage = false;
+            }
+
+            function itemSelect() {
+                let itemChoise = Math.ceil((clickPos.y - rowHeight * 2 + 2) / (rowHeight / 2));
+
+
+                clearCanvas();
+                context.beginPath()
+                context.strokeRect(0, 0, canvas.width, canvas.height)
+                context.font = "bold 15pt Arial";
+                context.fillText("Menu " + itemChoise + " in " + " title " + titleChoise + " clicked", canvas.width / 2, canvas.height / 2);
+                isShowMessage = true;
+
+
+
             }
 
         });
 
-        function itemSelect() {
 
-        }
 
 
     }
 
 
-    var preIndex = {};
 
-
-    /*
-        $("#tableCanvas").mousemove(e => {
-
-            var cursorPos = { x: e.offsetX, y: e.offsetY };
-            var cell = {};
-            cell.xIndex = Math.ceil(cursorPos.x / columnWidth);
-            cell.yIndex = Math.ceil(cursorPos.y / rowHeight);
-
-            if (!isTitleClick && (cell.xIndex != preIndex.x || cell.yIndex != preIndex.y)) {
-
-                drawTable();
-                context.beginPath();
-                context.fillStyle = 'rgba(255,255,255,0.1)';
-                context.fillRect(
-                    (cell.xIndex - 1) * columnWidth + 1,
-                    (cell.yIndex - 1) * rowHeight + 1,
-                    columnWidth - 2,
-                    rowHeight - context.lineWidth);
-                preIndex.x = cell.xIndex;
-                preIndex.y = cell.yIndex;
-
-            }
-
-        });
-    */
 
 });
