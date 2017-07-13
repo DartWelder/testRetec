@@ -68,7 +68,7 @@ $(document).ready(function() {
 
         function drawRowLines() {
             for (let i = 1; i <= rowCount; i++) {
-                let linePosition = i * rowHeight
+                let linePosition = i * rowHeight;
                 context.beginPath();
                 context.strokeStyle = '#fff';
                 context.moveTo(0, linePosition);
@@ -80,7 +80,7 @@ $(document).ready(function() {
 
         function drawColumnsLines() {
             for (let i = 1; i < columnCount; i++) {
-                let linePosition = i * columnWidth
+                let linePosition = i * columnWidth;
                 context.beginPath();
                 context.strokeStyle = '#fff';
                 context.moveTo(linePosition, 0);
@@ -99,7 +99,7 @@ $(document).ready(function() {
             isShowMessage;
 
         $("#tableCanvas").click(e => {
-            var clickPos = { x: e.offsetX, y: e.offsetY }
+            var clickPos = { x: e.offsetX, y: e.offsetY };
             if (!isTitleClick && clickPos.y <= rowHeight) {
                 titleChoise = Math.ceil(clickPos.x / columnWidth);
                 isTitleClick = true;
@@ -109,11 +109,11 @@ $(document).ready(function() {
                 let startX = (titleChoise - 1) * columnWidth + 1,
                     startY = rowHeight + 2,
                     width = columnWidth - 2,
-                    height = rowHeight * 3 - 3
+                    height = rowHeight * 3 - 3;
                 context.fillStyle = 'rgba(255,255,255,0.1)';
                 context.clearRect(startX, startY, width, height);
                 context.fillRect(startX, startY, width, height);
-                drawMenuItems()
+                drawMenuItems();
 
                 function drawMenuItems() {
                     menuItemHeigth = rowHeight / 2;
@@ -125,7 +125,7 @@ $(document).ready(function() {
                     context.lineTo(startX - 7 + columnWidth, startY + rowHeight - 2);
                     context.stroke();
 
-
+                    //Draw menu items
                     for (i = 1; i <= menuItemsCount; i++) {
                         context.beginPath();
                         context.fillStyle = "#fff";
@@ -162,8 +162,8 @@ $(document).ready(function() {
 
 
                 clearCanvas();
-                context.beginPath()
-                context.strokeRect(0, 0, canvas.width, canvas.height)
+                context.beginPath();
+                context.strokeRect(0, 0, canvas.width, canvas.height);
                 context.font = "bold 15pt Arial";
                 context.fillText("Menu " + itemChoise + " in " + " title " + titleChoise + " clicked", canvas.width / 2, canvas.height / 2);
                 isShowMessage = true;
