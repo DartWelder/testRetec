@@ -2,6 +2,6 @@
 
 ## Install
 
-npm i
-npm start
-localhost:8888/
+### npm i
+### npm start
+### localhost:8888/
