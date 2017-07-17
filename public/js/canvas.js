@@ -137,9 +137,6 @@ $(document).ready(function() {
 
                 }
 
-
-
-
                 context.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 
             } else if (!isShowMessage &&

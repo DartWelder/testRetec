@@ -7,7 +7,7 @@ const fs = require('fs-promise');
 const dbConnect = require('./libs/mongoose').dbConnect;*/
 
 
-const createRoutes = require('./router/index')
+
 const PORT = 8888;
 
 
@@ -22,19 +22,20 @@ app.use(cors());
 
 /*app.use(fileUpload());*/
 app.use('/static', express.static(path.join(__dirname, '/public')));
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
 
 /*app = createRoutes(app);*/
 app.get('/', (req, res) => {
-    fs.readFile(__dirname + '/public/index.html')
-        .then((data) => {
-            res.set({ 'Content-Type': 'text/html' })
-                .send(data)
-        })
-
-
+    res.sendFile(__dirname + '/public/index.html')
 });
 
+app.get('/messenger', (req, res) => {
+    res.sendFile(__dirname + '/public/messenger.html')
+})
+
+app.get('/canvastable', (req, res) => {
+    res.sendFile(__dirname + '/public/canvastable.html')
+})
 
 //404 page
 app.use(function(req, res) {

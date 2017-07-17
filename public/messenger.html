@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="messenger">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Messenger</title>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/css/messenger.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="static/js/appCtrl.js"></script>
+    <script src="static/js/messenger.js"></script>
+
+</head>
+
+<body ng-cloak ng-controller="ChatCtrl" class="center-block">
+
+
+    <div id="messenger" class="container-fluid">
+        <div class="header row">
+            <div class="title col-sm-2 col-sm-offset-5">
+                Messenger
+            </div>
+            <div class="col-sm-2 col-sm-offset-3">
+                <div class="ham-button ">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="chat-header">
+                <div class="col-sm-8">
+                    <p>Messages</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn-group">
+                        <div ng-click="export()" class="btn btn-danger">export</div>
+                        <div ng-click="popUp()" class="btn btn-danger btn-danger-white">delete all</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="chat-window col-sm-12">
+                <div class="message" ng-class="message.class" ng-repeat="message in messages">
+                    <div class="message-header">
+                        <div class="message-title">{{message.author}} <span>({{message.date | date: 'yyyy-MM-dd HH:MM:ss'}})</span></div>
+                        <div ng-click="deleteMessage()" id="delete-message" class="glyphicon glyphicon-trash"></div>
+                        </br>
+                    </div>
+
+                    <div class="message-text">
+                        <p>{{message.text}}</p>
+                    </div>
+                </div>
+
+                <div id="end-chat"></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="divider center-block col-sm-12"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <textarea ng-model="text" name="message" class="text-input" rows="1"></textarea>
+                <img ng-click="sendMessage(text)" class="sendButton" src="static/img/send.png" alt="">
+            </div>
+        </div>
+
+
+
+        <div class="popup" ng-show="confirm">
+            <div class="panel center-block text-center">
+                <h2>Are you sure you want to delete all messages?</h2>
+                <div ng-click="deleteAll(false)" class="btn btn-danger">No</div>
+                <div ng-click="deleteAll(true)" class="btn btn-success">Yes</div>
+            </div>
+        </div>
+
+        <div class="popup" ng-show="exports">
+            <div class="panel center-block text-center">
+                <h2>Export complete.</h2>
+
+                <div ng-click="exports=false" class="btn btn-success ok">OK!</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
